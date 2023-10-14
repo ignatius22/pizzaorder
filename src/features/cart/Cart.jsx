@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 
+// eslint-disable-next-line no-unused-vars
 const fakeCart = [
   {
     pizzaId: 12,
@@ -25,7 +26,7 @@ const fakeCart = [
 ];
 
 function Cart() {
-  const cart = fakeCart;
+  // const cart = fakeCart;
 
   return (
     <div>
