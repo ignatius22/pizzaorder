@@ -12,6 +12,8 @@ import UpdateOrder, {
 // import React from 'react'
 
 import Login from './features/user/Login';
+import ForgotPassword from './features/user/ForgotPassword';
+import ResetPassword from './features/user/ResetPassword';
 import ProtectedRoute from './ui/ProtectedRoute';
 import AuthProvider from './ui/AuthProvider';
 import OrderHistory from './features/order/OrderHistory';
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: '/reset-password',
+        element: <ResetPassword />,
       },
       {
         element: <ProtectedRoute />,
@@ -80,13 +90,16 @@ const router = createBrowserRouter([
   },
 ]);
 import { DarkModeProvider } from './ui/DarkModeContext';
+import { ToastProvider } from './ui/ToastContext';
 
 function App() {
   return (
     <DarkModeProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </ToastProvider>
     </DarkModeProvider>
   );
 }

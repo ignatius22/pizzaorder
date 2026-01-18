@@ -6,6 +6,7 @@ import DeleteItem from '../cart/DeleteItem';
 import UpdateItem from '../cart/UpdateItem';
 import { Pizza } from '../../types';
 import { AppDispatch } from '../../store';
+import { useToast } from '../../ui/ToastContext';
 
 interface MenuItemProps {
   pizza: Pizza;
@@ -18,7 +19,8 @@ function MenuItem({ pizza }: MenuItemProps) {
   const isInCart = currentQuantity > 0;
 
   const dispatch = useDispatch<AppDispatch>();
-  
+  const { showToast } = useToast();
+
   function handleAddToCart() {
     const newItem = {
       pizzaId: id,
@@ -28,6 +30,7 @@ function MenuItem({ pizza }: MenuItemProps) {
       totalPrice: unitPrice * 1,
     };
     dispatch(addItem(newItem));
+    showToast(`${name} added to cart`, 'success');
   }
 
   return (

@@ -5,24 +5,23 @@ import { supabase } from '../../services/supabase';
 import { updateProfile } from '../../services/apiRestaurant';
 import { updateAddress } from './userSlice';
 import Button from '../../ui/Button';
-import { 
-  UserIcon, 
-  PhoneIcon, 
-  MapPinIcon,
-  CheckBadgeIcon
+import { useToast } from '../../ui/ToastContext';
+import {
+  UserIcon,
+  PhoneIcon,
+  MapPinIcon
 } from '@heroicons/react/24/outline';
 
 function Profile() {
   const { id: userId, username: reduxUsername, email, address: reduxAddress } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
+  const { showToast } = useToast();
   const [username, setUsername] = useState(reduxUsername);
   const [address, setAddress] = useState(reduxAddress);
   const [phone, setPhone] = useState('');
   const [isFetching, setIsFetching] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     async function fetchProfile() {
@@ -63,8 +62,6 @@ function Profile() {
     if (!userId) return;
 
     setIsLoading(true);
-    setIsSuccess(false);
-    setError('');
 
     try {
       await updateProfile(userId, {
@@ -73,10 +70,9 @@ function Profile() {
         phone,
       });
       dispatch(updateAddress(address));
-      setIsSuccess(true);
-      setTimeout(() => setIsSuccess(false), 3000);
+      showToast('Profile updated successfully!', 'success');
     } catch (err: any) {
-      setError(err.message);
+      showToast(err.message || 'Failed to update profile', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -166,18 +162,9 @@ function Profile() {
             </div>
           </div>
 
-          {error && <p className="text-sm font-medium text-red-500">{error}</p>}
-          
           <div className="pt-2">
             <Button type="primary" disabled={isLoading}>
-              <div className="flex items-center justify-center gap-2">
-                {isLoading ? 'Saving...' : (
-                  <>
-                    {isSuccess ? <CheckBadgeIcon className="h-5 w-5" /> : null}
-                    <span>{isSuccess ? 'Profile Saved!' : 'Update Profile'}</span>
-                  </>
-                )}
-              </div>
+              {isLoading ? 'Saving...' : 'Update Profile'}
             </Button>
           </div>
         </form>
