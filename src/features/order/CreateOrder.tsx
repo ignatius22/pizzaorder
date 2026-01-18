@@ -30,6 +30,7 @@ function CreateOrder() {
   const [customer, setCustomer] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [orderError, setOrderError] = useState('');
 
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ function CreateOrder() {
       dispatch(clearCart());
       navigate(`/order/${order.id}`);
     } catch (err) {
-      alert('Payment successful but order creation failed. Please contact support.');
+      setOrderError('Payment successful but order creation failed. Please contact support.');
     } finally {
       setIsPlacingOrder(false);
     }
@@ -93,6 +94,7 @@ function CreateOrder() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setPhoneError('');
+    setOrderError('');
 
     if (!isValidPhone(phone)) {
       setPhoneError('Please provide a valid phone number.');
@@ -234,6 +236,12 @@ function CreateOrder() {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWithPriority(e.target.checked)}
             />
           </div>
+
+          {orderError && (
+            <div className="rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-center">
+              <p className="text-sm font-medium text-red-700 dark:text-red-400">{orderError}</p>
+            </div>
+          )}
 
           <div className="pt-4 border-t border-stone-100 dark:border-stone-800">
             <Button disabled={isPlacingOrder || isLoadingAddress} type="primary">

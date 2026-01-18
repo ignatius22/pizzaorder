@@ -20,6 +20,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +29,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
       if (isLogin) {
@@ -46,7 +48,7 @@ function Login() {
           navigate('/menu');
         }
       } else {
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -56,7 +58,7 @@ function Login() {
           },
         });
         if (error) throw error;
-        alert('Check your email for the confirmation link!');
+        setSuccess('Check your email for the confirmation link!');
       }
     } catch (err: any) {
       setError(err.message);
@@ -146,6 +148,16 @@ function Login() {
               >
                 {error}
               </motion.p>
+            )}
+
+            {success && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="rounded-2xl bg-green-50 border border-green-200 p-4 text-center"
+              >
+                <p className="text-sm font-medium text-green-700">{success}</p>
+              </motion.div>
             )}
 
             <div className="pt-2">
