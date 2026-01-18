@@ -2,8 +2,27 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartItem, CartState } from '../../types';
 import { RootState } from '../../store';
 
+// Load cart from localStorage
+function loadCartFromStorage(): CartItem[] {
+  try {
+    const stored = localStorage.getItem('cart');
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Save cart to localStorage
+function saveCartToStorage(cart: CartItem[]) {
+  try {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  } catch {
+    // Ignore storage errors
+  }
+}
+
 const initialState: CartState = {
-  cart: [],
+  cart: loadCartFromStorage(),
 };
 
 const cartSlice = createSlice({
@@ -12,9 +31,11 @@ const cartSlice = createSlice({
   reducers: {
     addItem(state, action: PayloadAction<CartItem>) {
       state.cart.push(action.payload);
+      saveCartToStorage(state.cart);
     },
     deleteItem(state, action: PayloadAction<number>) {
       state.cart = state.cart.filter((item) => item.pizzaId !== action.payload);
+      saveCartToStorage(state.cart);
     },
     increaseItemQuantity(state, action: PayloadAction<number>) {
       const item = state.cart.find((item) => item.pizzaId === action.payload);
@@ -22,6 +43,7 @@ const cartSlice = createSlice({
         item.quantity++;
         item.totalPrice = item.quantity * item.unitPrice;
       }
+      saveCartToStorage(state.cart);
     },
     decreaseItemQuantity(state, action: PayloadAction<number>) {
       const item = state.cart.find((item) => item.pizzaId === action.payload);
@@ -30,9 +52,11 @@ const cartSlice = createSlice({
         item.totalPrice = item.quantity * item.unitPrice;
         if (item.quantity === 0) cartSlice.caseReducers.deleteItem(state, action);
       }
+      saveCartToStorage(state.cart);
     },
     clearCart(state) {
       state.cart = [];
+      saveCartToStorage(state.cart);
     },
   },
 });
