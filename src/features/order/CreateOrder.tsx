@@ -71,7 +71,7 @@ function CreateOrder() {
   const handleSuccess = async (reference: any) => {
     setIsPlacingOrder(true);
     const newOrder: any = {
-      user_id: userId,
+      user_id: userId || null, // Use null instead of empty string for RLS
       customer: customer || username,
       email,
       phone,
