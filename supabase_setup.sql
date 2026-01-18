@@ -2,10 +2,19 @@
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
     username TEXT,
+    role TEXT DEFAULT 'customer',
     address TEXT,
     phone TEXT,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Add role column if it doesn't exist (for existing tables)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'profiles' AND column_name = 'role') THEN
+        ALTER TABLE public.profiles ADD COLUMN role TEXT DEFAULT 'customer';
+    END IF;
+END $$;
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 -- Safely handle policies (drop before create to update)
@@ -89,13 +98,25 @@ ALTER TABLE public.pizzas ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 
 -- 7. Public Access Policies
-DO $$ 
+DO $$
 BEGIN
     DROP POLICY IF EXISTS "Public can view menu" ON public.pizzas;
     DROP POLICY IF EXISTS "Anyone can create order" ON public.orders;
     DROP POLICY IF EXISTS "Users can view own orders" ON public.orders;
+    DROP POLICY IF EXISTS "Users can update own orders" ON public.orders;
+    DROP POLICY IF EXISTS "Admins can view all orders" ON public.orders;
+    DROP POLICY IF EXISTS "Admins can update all orders" ON public.orders;
 END $$;
 
 CREATE POLICY "Public can view menu" ON public.pizzas FOR SELECT USING (true);
 CREATE POLICY "Anyone can create order" ON public.orders FOR INSERT WITH CHECK (true);
 CREATE POLICY "Users can view own orders" ON public.orders FOR SELECT USING (auth.uid() = user_id OR user_id IS NULL);
+CREATE POLICY "Users can update own orders" ON public.orders FOR UPDATE USING (auth.uid() = user_id);
+
+-- Admin policies (check role from profiles table)
+CREATE POLICY "Admins can view all orders" ON public.orders FOR SELECT USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+);
+CREATE POLICY "Admins can update all orders" ON public.orders FOR UPDATE USING (
+    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+);

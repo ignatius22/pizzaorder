@@ -14,7 +14,7 @@ import { clearCart, getCart, getTotalCartPrice } from '../cart/cartSlice';
 import EmptyCart from '../cart/EmptyCart';
 import { RootState, AppDispatch } from '../../store';
 import { formatCurrency } from '../../utils/helpers';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchAddress } from '../user/userSlice';
 import { NewOrder } from '../../types';
 
@@ -42,12 +42,18 @@ function CreateOrder() {
 
   const {
     id: userId,
+    email: userEmail,
     username,
     status: addressStatus,
     position,
     address,
     error: errorAddress,
   } = useSelector((state: RootState) => state.user);
+
+  // Pre-fill email from logged-in user
+  useEffect(() => {
+    if (userEmail && !email) setEmail(userEmail);
+  }, [userEmail]);
   
   const isLoadingAddress = addressStatus === 'loading';
 
