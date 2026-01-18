@@ -20,7 +20,8 @@ export default {
         stone: {
           50: '#fafaf9',
           900: '#1c1917',
-        }
+        },
+        white:{}
       },
       height: {
         screen: '100dvh',
