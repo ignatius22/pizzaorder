@@ -3,10 +3,64 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg-color: #f9fafb;
+  --text-primary: #1c1917;
+  --text-secondary: #57534e;
+  --island-bg: #ffffff;
+  --island-border: #f5f5f4;
+  --island-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --input-bg: #f9fafb;
+  --sidebar-active: #ffbc0d;
+}
+
+.dark-mode {
+  --bg-color: #0c0a09;
+  --text-primary: #fafaf9;
+  --text-secondary: #a8a29e;
+  --island-bg: #1c1917;
+  --island-border: #292524;
+  --island-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
+  --input-bg: #1c1917;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    @apply font-sans transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    @apply transition-colors duration-300;
+  }
+}
+
 @layer components {
   .input {
-    @apply  rounded-full border border-stone-200 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-yellow-400 md:px-6 md:py-3;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    @apply rounded-full border border-stone-200 dark:border-stone-800 px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:outline-none focus:ring focus:ring-pizza-500 md:px-6 md:py-3;
   }
+
+  .island-card {
+    background-color: var(--island-bg);
+    border-color: var(--island-border);
+    box-shadow: var(--island-shadow);
+    @apply rounded-3xl p-6 border transition-all duration-300;
+  }
+
+  .sidebar-link {
+    color: var(--text-secondary);
+    @apply flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 hover:bg-pizza-50 hover:text-pizza-600 dark:hover:bg-stone-800 font-medium;
+  }
+
+  .sidebar-link-active {
+    @apply bg-pizza-500 text-stone-900 shadow-lg shadow-pizza-500/20 border-pizza-500;
+  }
+
   /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
   .loader {
     width: 45px;
