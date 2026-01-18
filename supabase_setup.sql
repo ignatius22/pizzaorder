@@ -70,28 +70,28 @@ CREATE TABLE IF NOT EXISTS public.orders (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 5. Full Menu Data (Working URLs)
+-- 5. Full Menu Data (Working URLs) - Prices in NGN
 INSERT INTO public.pizzas (id, name, "unitPrice", ingredients, "soldOut", "imageUrl")
-VALUES 
-(1, 'Margherita', 12, '{tomato,mozzarella,basil}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-1.jpg'),
-(2, 'Capricciosa', 14, '{tomato,mozzarella,ham,mushrooms,artichoke}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-2.jpg'),
-(3, 'Romana', 15, '{tomato,mozzarella,prosciutto}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-3.jpg'),
-(4, 'Prosciutto e Rucola', 16, '{tomato,mozzarella,prosciutto,arugula}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-4.jpg'),
-(5, 'Diavola', 16, '{tomato,mozzarella,spicy salami,chili flakes}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-5.jpg'),
-(6, 'Vegetale', 13, '{tomato,mozzarella,bell peppers,onions,mushrooms}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-6.jpg'),
-(7, 'Napoli', 16, '{tomato,mozzarella,fresh tomato,basil}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-7.jpg'),
-(8, 'Siciliana', 16, '{tomato,mozzarella,anchovies,olives,capers}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-8.jpg'),
-(9, 'Pepperoni', 14, '{tomato,mozzarella,pepperoni}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-9.jpg'),
-(10, 'Hawaiian', 15, '{tomato,mozzarella,pineapple,ham}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-10.jpg'),
-(11, 'Spinach and Mushroom', 15, '{tomato,mozzarella,spinach,mushrooms}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-11.jpg'),
-(12, 'Mediterranean', 16, '{tomato,mozzarella,sun-dried tomatoes,olives,artichoke}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-12.jpg'),
-(13, 'Greek', 16, '{tomato,mozzarella,spinach,feta,olives,pepperoncini}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-13.jpg'),
-(14, 'Abruzzese', 16, '{tomato,mozzarella,prosciutto,arugula}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-14.jpg'),
-(15, 'Pesto Chicken', 16, '{pesto,mozzarella,chicken,sun-dried tomatoes,spinach}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-15.jpg'),
-(16, 'Eggplant Parmesan', 15, '{marinara,mozzarella,eggplant,parmesan}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-16.jpg'),
-(17, 'Roasted Veggie', 15, '{marinara,mozzarella,zucchini,eggplant,peppers,onions}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-17.jpg'),
-(18, 'Tofu and Mushroom', 15, '{marinara,mozzarella,tofu,mushrooms,bell peppers}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-18.jpg')
-ON CONFLICT (id) DO UPDATE SET "imageUrl" = EXCLUDED."imageUrl";
+VALUES
+(1, 'Margherita', 3500, '{tomato,mozzarella,basil}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-1.jpg'),
+(2, 'Capricciosa', 4200, '{tomato,mozzarella,ham,mushrooms,artichoke}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-2.jpg'),
+(3, 'Romana', 4500, '{tomato,mozzarella,prosciutto}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-3.jpg'),
+(4, 'Prosciutto e Rucola', 4800, '{tomato,mozzarella,prosciutto,arugula}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-4.jpg'),
+(5, 'Diavola', 4800, '{tomato,mozzarella,spicy salami,chili flakes}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-5.jpg'),
+(6, 'Vegetale', 3800, '{tomato,mozzarella,bell peppers,onions,mushrooms}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-6.jpg'),
+(7, 'Napoli', 4800, '{tomato,mozzarella,fresh tomato,basil}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-7.jpg'),
+(8, 'Siciliana', 4800, '{tomato,mozzarella,anchovies,olives,capers}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-8.jpg'),
+(9, 'Pepperoni', 4200, '{tomato,mozzarella,pepperoni}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-9.jpg'),
+(10, 'Hawaiian', 4500, '{tomato,mozzarella,pineapple,ham}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-10.jpg'),
+(11, 'Spinach and Mushroom', 4500, '{tomato,mozzarella,spinach,mushrooms}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-11.jpg'),
+(12, 'Mediterranean', 4800, '{tomato,mozzarella,sun-dried tomatoes,olives,artichoke}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-12.jpg'),
+(13, 'Greek', 4800, '{tomato,mozzarella,spinach,feta,olives,pepperoncini}', true, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-13.jpg'),
+(14, 'Abruzzese', 4800, '{tomato,mozzarella,prosciutto,arugula}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-14.jpg'),
+(15, 'Pesto Chicken', 4800, '{pesto,mozzarella,chicken,sun-dried tomatoes,spinach}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-15.jpg'),
+(16, 'Eggplant Parmesan', 4500, '{marinara,mozzarella,eggplant,parmesan}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-16.jpg'),
+(17, 'Roasted Veggie', 4500, '{marinara,mozzarella,zucchini,eggplant,peppers,onions}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-17.jpg'),
+(18, 'Tofu and Mushroom', 4500, '{marinara,mozzarella,tofu,mushrooms,bell peppers}', false, 'https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/pizzas/pizza-18.jpg')
+ON CONFLICT (id) DO UPDATE SET "unitPrice" = EXCLUDED."unitPrice", "imageUrl" = EXCLUDED."imageUrl";
 
 -- 6. Enable RLS (Row Level Security)
 ALTER TABLE public.pizzas ENABLE ROW LEVEL SECURITY;

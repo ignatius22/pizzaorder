@@ -40,10 +40,18 @@ function Login() {
         if (error) throw error;
         
         if (data.user) {
+          // Fetch role from profiles table
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role, username')
+            .eq('id', data.user.id)
+            .single();
+
           dispatch(setUser({
             id: data.user.id,
             email: data.user.email || '',
-            username: data.user.user_metadata.username || email.split('@')[0],
+            username: profile?.username || data.user.user_metadata.username || email.split('@')[0],
+            role: (profile?.role as 'customer' | 'admin') || 'customer',
           }));
           navigate('/menu');
         }
@@ -174,13 +182,23 @@ function Login() {
             </div>
           </form>
 
-          <div className="mt-8 text-center border-t border-stone-100 pt-6">
+          <div className="mt-8 text-center border-t border-stone-100 pt-6 space-y-3">
             <button
               onClick={() => setIsLogin(!isLogin)}
               className="text-sm font-medium text-stone-500 hover:text-pizza-600 transition-colors"
             >
               {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
             </button>
+            {isLogin && (
+              <div>
+                <a
+                  href="/forgot-password"
+                  className="text-sm font-medium text-pizza-500 hover:text-pizza-600 transition-colors"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </motion.div>

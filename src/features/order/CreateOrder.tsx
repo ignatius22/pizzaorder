@@ -60,7 +60,7 @@ function CreateOrder() {
   const paystackConfig = {
     reference: (new Date()).getTime().toString(),
     email: email,
-    amount: totalPrice * 100 * 1500, // Assuming 1500 NGN per standard unit for demo
+    amount: totalPrice * 100, // Amount in kobo (100 kobo = 1 NGN)
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || '',
   };
 
