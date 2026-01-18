@@ -34,6 +34,7 @@ const initialState: UserState = {
   username: '',
   role: 'customer',
   isAuthenticated: false,
+  isAuthLoading: true,
   status: 'idle',
   position: {},
   address: '',
@@ -50,6 +51,7 @@ const userSlice = createSlice({
       state.username = action.payload.username;
       state.role = action.payload.role || 'customer';
       state.isAuthenticated = true;
+      state.isAuthLoading = false;
     },
     logout(state) {
       state.id = '';
@@ -57,6 +59,10 @@ const userSlice = createSlice({
       state.username = '';
       state.role = 'customer';
       state.isAuthenticated = false;
+      state.isAuthLoading = false;
+    },
+    setAuthLoading(state, action: PayloadAction<boolean>) {
+      state.isAuthLoading = action.payload;
     },
     updateAddress(state, action: PayloadAction<string>) {
       state.address = action.payload;
@@ -79,6 +85,6 @@ const userSlice = createSlice({
       }),
 });
 
-export const { setUser, logout, updateAddress } = userSlice.actions;
+export const { setUser, logout, setAuthLoading, updateAddress } = userSlice.actions;
 
 export default userSlice.reducer;

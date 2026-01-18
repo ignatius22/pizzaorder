@@ -1,7 +1,7 @@
 import { useEffect, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { supabase } from '../services/supabase';
-import { setUser, logout } from '../features/user/userSlice';
+import { setUser, logout, setAuthLoading } from '../features/user/userSlice';
 import { AppDispatch } from '../store';
 
 interface AuthProviderProps {
@@ -31,7 +31,11 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     // 1. Initial check for session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) getProfileAndSetUser(session);
+      if (session) {
+        getProfileAndSetUser(session);
+      } else {
+        dispatch(setAuthLoading(false));
+      }
     });
 
     // 2. Listen for auth changes

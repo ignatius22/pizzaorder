@@ -11,7 +11,6 @@ import {
   MapPinIcon,
   CheckBadgeIcon
 } from '@heroicons/react/24/outline';
-import { motion } from 'framer-motion';
 
 function Profile() {
   const { id: userId, username: reduxUsername, email, address: reduxAddress } = useSelector((state: RootState) => state.user);
@@ -20,23 +19,40 @@ function Profile() {
   const [username, setUsername] = useState(reduxUsername);
   const [address, setAddress] = useState(reduxAddress);
   const [phone, setPhone] = useState('');
+  const [isFetching, setIsFetching] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
     async function fetchProfile() {
-      if (!userId) return;
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-      
-      if (data) {
-        setUsername(data.username || reduxUsername);
-        setAddress(data.address || reduxAddress);
-        setPhone(data.phone || '');
+      if (!userId) {
+        setIsFetching(false);
+        return;
+      }
+
+      try {
+        setIsFetching(true);
+        const { data, error: fetchError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        if (fetchError) {
+          console.error('Profile fetch error:', fetchError);
+          // Profile might not exist, use Redux values as fallback
+        }
+
+        if (data) {
+          setUsername(data.username || reduxUsername);
+          setAddress(data.address || reduxAddress);
+          setPhone(data.phone || '');
+        }
+      } catch (err) {
+        console.error('Profile fetch error:', err);
+      } finally {
+        setIsFetching(false);
       }
     }
     fetchProfile();
@@ -64,6 +80,30 @@ function Profile() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  if (isFetching) {
+    return (
+      <div className="py-8">
+        <h2 className="mb-10 font-display text-4xl font-extrabold tracking-tight text-stone-800 dark:text-stone-100">
+          User <span className="text-pizza-500">Profile</span>
+        </h2>
+        <div className="island-card animate-pulse">
+          <div className="flex items-center gap-4 mb-8 pb-6 border-b border-stone-100 dark:border-stone-800">
+            <div className="h-16 w-16 rounded-3xl bg-stone-200 dark:bg-stone-700" />
+            <div className="space-y-2">
+              <div className="h-5 w-32 bg-stone-200 dark:bg-stone-700 rounded" />
+              <div className="h-4 w-48 bg-stone-200 dark:bg-stone-700 rounded" />
+            </div>
+          </div>
+          <div className="space-y-6">
+            <div className="h-12 bg-stone-200 dark:bg-stone-700 rounded-2xl" />
+            <div className="h-12 bg-stone-200 dark:bg-stone-700 rounded-2xl" />
+            <div className="h-24 bg-stone-200 dark:bg-stone-700 rounded-2xl" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -76,6 +76,7 @@ export interface UserState {
   username: string;
   role: 'customer' | 'admin';
   isAuthenticated: boolean;
+  isAuthLoading: boolean;
   status: 'idle' | 'loading' | 'error';
   position: {
     latitude?: number;
